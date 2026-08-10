@@ -14,9 +14,13 @@ app.post("/tts-srt", async (req, res) => {
     if (!text) return res.status(400).json({ error: "text is required" });
 
     const tts = new MsEdgeTTS();
-    await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+    await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3, {
+      wordBoundaryEnabled: true,
+      sentenceBoundaryEnabled: false,
+    });
 
-    const { audioStream, metadataStream } = tts.toStream(text, { rate, pitch, volume: "+0%" });
+    // IMPORTANT: toStream() returns a Promise in msedge-tts v2 — must await it
+    const { audioStream, metadataStream } = await tts.toStream(text, { rate, pitch, volume: "+0%" });
 
     const audioChunks = [];
     audioStream.on("data", (chunk) => audioChunks.push(chunk));
