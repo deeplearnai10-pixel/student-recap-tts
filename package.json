@@ -1,13 +1,17 @@
 {
   "name": "student-recap-tts",
   "version": "1.0.0",
+  "description": "Edge TTS server for DeepLearn AI",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
-    "express": "^4.19.2",
     "cors": "^2.8.5",
-    "msedge-tts": "^2.0.7"
+    "express": "^4.21.2",
+    "msedge-tts": "latest"
   }
 }
