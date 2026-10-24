@@ -178,7 +178,7 @@ async function synthChunkRaw(text, voice, rate, pitch) {
         if (!r.audio.length) throw new Error("No audio received");
         return r;
       } catch (e) {
-        lastErr = e;
+        if (!lastErr || lastErr.status !== 403) lastErr = e; // keep the real 403, not the backup host's 200
         if (e.status === 403 || e.status === 401) {
           if (e.serverDate) skewSec = (e.serverDate - Date.now()) / 1000;
           console.warn(`Edge TTS ${e.status} from ${e.host} (attempt ${attempt}/${MAX_ATTEMPTS}), skew=${skewSec.toFixed(1)}s`);
